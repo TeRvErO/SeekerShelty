@@ -14,13 +14,27 @@ function addressContract(deployer, nonce) {
 	return address;
 }
 
+function vanityAddress(prefix, suffix) {
+	const ethWallet = require('ethereumjs-wallet');
+	while (true) {
+		let addressData = ethWallet.generate();
+		var pkey = addressData.getPrivateKeyString();
+		var address = addressData.getAddressString();
+		if (address.slice(2, 42).startsWith(prefix) && address.slice(2, 42).endsWith(suffix))
+			break;
+	}
+	console.log(`Private key: ${pkey}`);
+	console.log(`Address: ${address}`);
+}
+
 //let seed = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon"
 main_question_choices = [
 	"Get future contract address",
 	"Get wallet from mnemonic",
 	"Generate mnemonic",
-	"Get checksummed mnemonic",
-	"Check balances"
+	"Checksum mnemonic",
+	"Check balances",
+	"Vanity address",
 ]
 
 inquirer
@@ -92,6 +106,20 @@ inquirer
 		choices: Object.keys(chains),
 		when: (answers) => answers.action == main_question_choices[4],
     },
+    {
+		type: "input",
+		name: "prefix",
+		message: "Type a prefix:",
+		validate: (prefix) => prefix.length == 0 || /[0-9A-Fa-f]/g.test(prefix),
+		when: (answers) => answers.action == main_question_choices[5],
+    },
+    {
+		type: "input",
+		name: "suffix",
+		message: "Type a suffix:",
+		validate: (suffix) => suffix.length == 0 || /[0-9A-Fa-f]/g.test(suffix),
+		when: (answers) => answers.action == main_question_choices[5],
+    },
   ])
   .then((answers) => {
   	//console.log(answers);
@@ -109,6 +137,8 @@ inquirer
   		let helper = new Web3Helper(answers.address, answers.network);
   		helper.getBalances();
   	}
+  	else if (answers.action == main_question_choices[5])
+  		vanityAddress(answers.prefix, answers.suffix);
   })
   .catch((error) => {
     if (error.isTtyError) {

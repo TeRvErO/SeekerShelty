@@ -4,9 +4,9 @@
   "description": "Playground for Ethereum",
   "main": "playground.js",
   "dependencies": {
+    "@peculiar/webcrypto": "^1.4.0",
     "bip39": "^2.5.0",
     "elliptic": "^6.5.3",
-    "@peculiar/webcrypto": "^1.4.0",
     "ethereumjs-wallet": "^0.6.5",
     "hdkey": "^2.0.1",
     "inquirer": "^8.2.4",

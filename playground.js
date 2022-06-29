@@ -86,14 +86,14 @@ inquirer
 		type: "input",
 		name: "prefix",
 		message: "Type a prefix:",
-		validate: (prefix) => prefix.length == 0 || /[0-9A-Fa-f]/g.test(prefix),
+		validate: (prefix) => prefix.length == 0 || Web3.utils.isHex(prefix),
 		when: (answers) => answers.action == main_question_choices[5],
     },
     {
 		type: "input",
 		name: "suffix",
 		message: "Type a suffix:",
-		validate: (suffix) => suffix.length == 0 || /[0-9A-Fa-f]/g.test(suffix),
+		validate: (suffix) => suffix.length == 0 || Web3.utils.isHex(suffix),
 		when: (answers) => answers.action == main_question_choices[5],
     },
   ])

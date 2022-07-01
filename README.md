@@ -7,4 +7,4 @@ Some useful Ethereum tools for mnemonics, contracts and addresses
 3. node playground.js
 
 ### Notes
-One can add new chains besides existing ones in chains.js, respecting format and using corresponding RPCs.
+One can add new chains besides existing ones in chains.js, respecting format and using corresponding RPCs. Also it's possible to add token contracts to track balances of addresses.

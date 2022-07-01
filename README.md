@@ -3,7 +3,7 @@ Some useful Ethereum tools for mnemonics, contracts and addresses
 
 ## How to use it
 1. npm install
-2. Create an Infura account and update a variable infura_id in the file chains.js with yours
+2. Create an Infura account and update a variable infura_id in the file chains.js with your ID
 3. node playground.js
 
 ### Notes

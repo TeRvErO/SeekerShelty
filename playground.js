@@ -11,8 +11,6 @@ main_question_choices = [
 	"Checksum mnemonic",
 	"Check balances",
 	"Vanity address",
-	"Play in",
-	"Play out",
 ]
 
 var gasPrices = getGasPrices();

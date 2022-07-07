@@ -4,6 +4,7 @@ let {chains, Web3Helper, Web3, getGasPrices} = require("./help_balances.js");
 let {addressContract, vanityAddress, Playground} = require("./help_addresses.js");
 let ethers = require('ethers');
 
+
 main_question_choices = [
 	"Get future contract address",
 	"Get wallet from mnemonic",
@@ -11,9 +12,10 @@ main_question_choices = [
 	"Checksum mnemonic",
 	"Check balances",
 	"Vanity address",
+
 ]
 
-var gasPrices = getGasPrices();
+//var gasPrices = getGasPrices();
 
 inquirer
   .prompt([

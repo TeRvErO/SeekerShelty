@@ -33,13 +33,48 @@ class Web3Helper {
 		console.log(`${balance / 10 ** decimals} ${name_token}`);
 	}
 
+	async getGasPrice() {
+		return (await this.web3.eth.getGasPrice()) / 10**9;
+	}
+
 	async getBalances() {
 		console.log("Balances:");
+		console.log("Nonce: ", await this.web3.eth.getTransactionCount(this.address) )
+		console.log(`Gas price: ${(await this.web3.eth.getGasPrice())/ 10**9} gwei`)
 		this.balanceNative();
 		for (let contract_address of this.contract_addresses)
 			this.balanceERC20(contract_address);
 			
 	}
+
+	async send_txEIP1559(account, value, goal, maxFeePerGas, maxPriorityFeePerGas, gas, data, chainId, nonce=-1) {
+		if (nonce == -1) {
+			nonce = await this.web3.eth.getTransactionCount(account.address);
+		}
+		let transaction = {
+			value: this.web3.utils.toWei(value.toString()),
+			to: this.web3.utils.toChecksumAddress(goal),
+			maxFeePerGas: maxFeePerGas,
+			maxPriorityFeePerGas: maxPriorityFeePerGas,
+			gas: gas,
+			data: data,
+			chainId: chainId,
+			nonce: nonce,
+			type: 2,
+		}
+		let signed = await this.web3.eth.accounts.signTransaction(transaction, account.pkey);
+		this.web3.eth.sendSignedTransaction(signed.rawTransaction);
+	}
 }
 
-module.exports = {chains, Web3Helper, Web3};
+
+async function getGasPrices() {
+	let gasPrices = {};
+	for (let network in chains) {
+		let web3Helper = new Web3Helper("", network);
+		gasPrices[network] = await web3Helper.getGasPrice();
+	}
+	return gasPrices;
+}
+
+module.exports = {chains, Web3Helper, Web3, getGasPrices};

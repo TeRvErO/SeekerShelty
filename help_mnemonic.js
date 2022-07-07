@@ -1,8 +1,8 @@
 const bip39 = require("bip39");
 const hdkey = require('ethereumjs-wallet/hdkey');
 
-function getWalletFromMnemonic(mnemonic, number) {
-	const hdwallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));
+function getWalletFromMnemonic(mnemonic, passphrase, number) {
+	const hdwallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic, passphrase));
 	for (let i = parseInt(number); i < parseInt(number) + 1; i++) {
 		const path = `m/44'/60'/0'/0/${i}`;
 		const wallet = hdwallet.derivePath(path).getWallet();

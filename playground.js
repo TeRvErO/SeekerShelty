@@ -12,7 +12,8 @@ main_question_choices = [
 	"Checksum mnemonic",
 	"Check balances",
 	"Vanity address",
-
+	// "Play in",
+	// "Play out",
 ]
 
 //var gasPrices = getGasPrices();
@@ -44,10 +45,7 @@ inquirer
 		name: "mnemonic",
 		message: "Type a mnemonic:",
 		validate: (seed) => {
-			words = seed.split(" ");
-			if (!(words.length >= 12 && words.length % 3 == 0)) throw "Length should be >= 12 and divide by 3";
-			wrong_word = words.find(word => !bip39.wordlists.english.includes(word));
-			if (wrong_word !== undefined) throw `Wrong word '${wrong_word}'`;
+			if (!bip39.validateMnemonic(seed)) throw "Wrong mnemonic (or not checksummed)";
 			return true; 
 		},
 		when: (answers) => answers.action == main_question_choices[1],
@@ -56,6 +54,26 @@ inquirer
 		type: "password",
 		name: "password",
 		message: "Type a passphrase:",
+		when: (answers) => answers.action == main_question_choices[1],
+    },
+    {
+		type: "password",
+		name: "password2",
+		message: "Type again a passphrase:",
+		validate: (password, answers) => {
+			if (answers.password != password) throw "Passwords don't match";
+			return true; 
+		},
+		when: (answers) => answers.action == main_question_choices[1],
+    },
+    {
+		type: "password",
+		name: "password3",
+		message: "Type again again a passphrase(promise, it's a last time :D):",
+		validate: (password, answers) => {
+			if (answers.password != password) throw "Passwords don't match";
+			return true; 
+		},
 		when: (answers) => answers.action == main_question_choices[1],
     },
     {
